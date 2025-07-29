@@ -1,11 +1,111 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, CheckCircle, Users, Calendar, CreditCard, TrendingUp } from "lucide-react";
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent,
+  Container,
+  Grid,
+  styled,
+  useTheme
+} from "@mui/material";
+import { 
+  ArrowForward, 
+  CheckCircle, 
+  People, 
+  CalendarMonth, 
+  CreditCard, 
+  TrendingUp 
+} from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-image.jpg";
 
+const HeroContainer = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+}));
+
+const BackgroundImage = styled('img')({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  zIndex: 0,
+});
+
+const Overlay = styled(Box)({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6))',
+  zIndex: 1,
+});
+
+const FeatureCard = styled(Card)(({ theme }) => ({
+  padding: theme.spacing(3),
+  background: 'rgba(255, 255, 255, 0.1)',
+  backdropFilter: 'blur(10px)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  color: 'white',
+  transition: 'all 0.5s ease',
+  '&:hover': {
+    transform: 'translateY(-8px)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
+  },
+}));
+
+const FloatingIcon = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  background: theme.palette.gradient.primary,
+  borderRadius: theme.spacing(1.5),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  animation: 'float 3s ease-in-out infinite',
+}));
+
+const GradientText = styled(Typography)({
+  background: 'linear-gradient(135deg, #a855f7, #3b82f6)',
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  animation: 'float 3s ease-in-out infinite',
+});
+
+const ScrollIndicator = styled(Box)({
+  position: 'absolute',
+  bottom: 32,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  zIndex: 10,
+  '& .scroll-mouse': {
+    width: 24,
+    height: 40,
+    border: '2px solid rgba(255, 255, 255, 0.3)',
+    borderRadius: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    '& .scroll-wheel': {
+      width: 4,
+      height: 12,
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      borderRadius: 2,
+      marginTop: 8,
+    },
+  },
+});
+
 export function HeroSection() {
   const [scrollY, setScrollY] = useState(0);
+  const theme = useTheme();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -13,142 +113,171 @@ export function HeroSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const features = [
+    {
+      icon: CalendarMonth,
+      title: 'Smart Scheduling',
+      description: 'Automated booking system with real-time availability and conflict prevention.',
+      delay: '0s',
+    },
+    {
+      icon: CreditCard,
+      title: 'Payment Processing',
+      description: 'Secure payment gateway with automated billing and subscription management.',
+      delay: '0.2s',
+    },
+    {
+      icon: People,
+      title: 'Member Management',
+      description: 'Complete member profiles with attendance tracking and personalized experiences.',
+      delay: '0.4s',
+    },
+  ];
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <HeroContainer>
       {/* Background Image with Parallax */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="Professional Studio" 
-          className="w-full h-full object-cover parallax-bg"
-          style={{
-            transform: `translateY(${scrollY * 0.5}px)`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
-      </div>
+      <BackgroundImage
+        src={heroImage}
+        alt="Professional Studio"
+        style={{
+          transform: `translateY(${scrollY * 0.5}px)`,
+        }}
+      />
+      <Overlay />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, py: 10 }}>
+        <Grid container spacing={6} alignItems="center">
           {/* Left Content */}
-          <div className="text-white space-y-8 animate-fade-in-left">
-            <div className="space-y-6">
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                Transform Your 
-                <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent animate-float">
-                  Studio Management
-                </span>
-              </h1>
-              <p className="text-xl lg:text-2xl text-white/90 leading-relaxed">
-                Streamline operations, boost member engagement, and grow your business with our comprehensive studio management platform.
-              </p>
-            </div>
+          <Grid item xs={12} lg={6}>
+            <Box sx={{ color: 'white', '& > *': { mb: 4 } }} className="animate-fade-in-left">
+              <Box>
+                <Typography variant="h1" component="h1" sx={{ mb: 3, lineHeight: 1.2 }}>
+                  Transform Your{' '}
+                  <GradientText variant="h1" sx={{ display: 'block' }}>
+                    Studio Management
+                  </GradientText>
+                </Typography>
+                <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6 }}>
+                  Streamline operations, boost member engagement, and grow your business with our comprehensive studio management platform.
+                </Typography>
+              </Box>
 
-            {/* Key Benefits */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0" />
-                <span className="text-lg">Automated scheduling and booking system</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0" />
-                <span className="text-lg">Seamless payment processing and billing</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0" />
-                <span className="text-lg">Comprehensive member management tools</span>
-              </div>
-            </div>
+              {/* Key Benefits */}
+              <Box sx={{ '& > *': { mb: 2 } }}>
+                {[
+                  'Automated scheduling and booking system',
+                  'Seamless payment processing and billing',
+                  'Comprehensive member management tools',
+                ].map((benefit, index) => (
+                  <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <CheckCircle sx={{ color: '#4ade80', fontSize: 24 }} />
+                    <Typography variant="body1" sx={{ fontSize: '1.125rem' }}>
+                      {benefit}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button 
-                variant="hero" 
-                size="hero" 
-                className="group"
-              >
-                Get Started Today
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="hero"
-                className="border-white/30 text-white hover:bg-white hover:text-black"
-              >
-                Watch Demo
-              </Button>
-            </div>
+              {/* CTA Buttons */}
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, pt: 2 }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowForward />}
+                  sx={{
+                    py: 2,
+                    px: 4,
+                    fontSize: '1.125rem',
+                    fontWeight: 600,
+                    '& .MuiSvgIcon-root': {
+                      transition: 'transform 0.3s ease',
+                    },
+                    '&:hover .MuiSvgIcon-root': {
+                      transform: 'translateX(4px)',
+                    },
+                  }}
+                >
+                  Get Started Today
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  sx={{
+                    py: 2,
+                    px: 4,
+                    fontSize: '1.125rem',
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: 'white',
+                      color: 'black',
+                      borderColor: 'white',
+                    },
+                  }}
+                >
+                  Watch Demo
+                </Button>
+              </Box>
 
-            {/* Trust Indicators */}
-            <div className="pt-8 border-t border-white/20">
-              <p className="text-white/70 text-sm mb-4">Trusted by 500+ studios worldwide</p>
-              <div className="flex items-center space-x-8 text-white/60">
-                <div className="flex items-center space-x-2">
-                  <Users className="h-5 w-5" />
-                  <span className="text-sm">10,000+ Members</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Calendar className="h-5 w-5" />
-                  <span className="text-sm">50,000+ Classes</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="h-5 w-5" />
-                  <span className="text-sm">98% Satisfaction</span>
-                </div>
-              </div>
-            </div>
-          </div>
+              {/* Trust Indicators */}
+              <Box sx={{ pt: 4, borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}>
+                  Trusted by 500+ studios worldwide
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap', color: 'rgba(255, 255, 255, 0.6)' }}>
+                  {[
+                    { icon: People, text: '10,000+ Members' },
+                    { icon: CalendarMonth, text: '50,000+ Classes' },
+                    { icon: TrendingUp, text: '98% Satisfaction' },
+                  ].map((item, index) => (
+                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <item.icon sx={{ fontSize: 20 }} />
+                      <Typography variant="body2">{item.text}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
 
           {/* Right Content - Feature Cards */}
-          <div className="hidden lg:block space-y-6 animate-fade-in-right">
-            <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 text-white hover-lift transition-all duration-500">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="p-3 bg-gradient-primary rounded-lg animate-float">
-                  <Calendar className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold">Smart Scheduling</h3>
-              </div>
-              <p className="text-white/80">
-                Automated booking system with real-time availability and conflict prevention.
-              </p>
-            </Card>
-
-            <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 text-white hover-lift transition-all duration-500" style={{ animationDelay: '0.2s' }}>
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="p-3 bg-gradient-primary rounded-lg animate-float" style={{ animationDelay: '1s' }}>
-                  <CreditCard className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold">Payment Processing</h3>
-              </div>
-              <p className="text-white/80">
-                Secure payment gateway with automated billing and subscription management.
-              </p>
-            </Card>
-
-            <Card className="p-6 bg-white/10 backdrop-blur-sm border-white/20 text-white hover-lift transition-all duration-500" style={{ animationDelay: '0.4s' }}>
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="p-3 bg-gradient-primary rounded-lg animate-float" style={{ animationDelay: '2s' }}>
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold">Member Management</h3>
-              </div>
-              <p className="text-white/80">
-                Complete member profiles with attendance tracking and personalized experiences.
-              </p>
-            </Card>
-          </div>
-        </div>
-      </div>
+          <Grid item xs={12} lg={6} sx={{ display: { xs: 'none', lg: 'block' } }}>
+            <Box sx={{ '& > *': { mb: 3 } }} className="animate-fade-in-right">
+              {features.map((feature, index) => (
+                <FeatureCard
+                  key={index}
+                  sx={{
+                    animationDelay: feature.delay,
+                  }}
+                >
+                  <CardContent sx={{ p: 0 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                      <FloatingIcon sx={{ animationDelay: `${index * 0.5}s` }}>
+                        <feature.icon sx={{ color: 'white', fontSize: 24 }} />
+                      </FloatingIcon>
+                      <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+                        {feature.title}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                      {feature.description}
+                    </Typography>
+                  </CardContent>
+                </FeatureCard>
+              ))}
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
-          </div>
+      <ScrollIndicator className="animate-bounce">
+        <div className="scroll-mouse">
+          <div className="scroll-wheel"></div>
         </div>
-      </div>
-    </section>
+      </ScrollIndicator>
+    </HeroContainer>
   );
 }

@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { FeaturesSection } from "@/components/FeaturesSection";
@@ -8,17 +9,17 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <Box sx={{ minHeight: '100vh' }}>
       <Header />
-      <main>
+      <Box component="main">
         <HeroSection />
         <FeaturesSection />
         <TestimonialsSection />
         <PricingSection />
-      </main>
+      </Box>
       <Footer />
       <FloatingActionButton />
-    </div>
+    </Box>
   );
 };
 

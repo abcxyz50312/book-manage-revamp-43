@@ -1,11 +1,56 @@
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { 
+  AppBar, 
+  Toolbar, 
+  Typography, 
+  Box, 
+  Button, 
+  IconButton, 
+  Drawer, 
+  List, 
+  ListItem, 
+  ListItemText,
+  useTheme,
+  useMediaQuery,
+  styled
+} from "@mui/material";
+import { Menu, Close } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import logoImg from "@/assets/logo.png";
+
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  background: 'rgba(255, 255, 255, 0.8)',
+  backdropFilter: 'blur(20px)',
+  borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.3s ease',
+  '&.scrolled': {
+    background: 'rgba(255, 255, 255, 0.95)',
+    backdropFilter: 'blur(20px)',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+  },
+}));
+
+const NavButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  textTransform: 'none',
+  fontSize: '1rem',
+  fontWeight: 500,
+  '&:hover': {
+    color: theme.palette.text.primary,
+    transform: 'scale(1.05)',
+    backgroundColor: 'transparent',
+  },
+}));
+
+const Logo = styled('img')({
+  height: 40,
+  width: 40,
+});
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,103 +69,115 @@ export function Header() {
     setIsMenuOpen(false);
   };
 
+  const menuItems = [
+    { label: 'Features', id: 'features' },
+    { label: 'Pricing', id: 'pricing' },
+    { label: 'Testimonials', id: 'testimonials' },
+    { label: 'Contact', id: 'contact' },
+  ];
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 nav-sticky ${isScrolled ? 'scrolled bg-background/95' : 'bg-background/80'} backdrop-blur-lg border-b border-border transition-all duration-300`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <img src={logoImg} alt="Book & Manage" className="h-10 w-10" />
-            <span className="text-xl font-bold text-foreground">Book & Manage</span>
-          </div>
+    <StyledAppBar 
+      position="fixed" 
+      elevation={0}
+      className={isScrolled ? 'scrolled' : ''}
+      sx={{ color: 'text.primary' }}
+    >
+      <Toolbar sx={{ maxWidth: 1200, mx: 'auto', width: '100%', px: { xs: 2, sm: 3, lg: 4 } }}>
+        {/* Logo */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexGrow: isMobile ? 1 : 0 }}>
+          <Logo src={logoImg} alt="Book & Manage" />
+          <Typography variant="h6" component="div" sx={{ fontWeight: 700, color: 'text.primary' }}>
+            Book & Manage
+          </Typography>
+        </Box>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={() => scrollToSection('features')} 
-              className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
-            >
-              Features
-            </button>
-            <button 
-              onClick={() => scrollToSection('pricing')} 
-              className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
-            >
-              Pricing
-            </button>
-            <button 
-              onClick={() => scrollToSection('testimonials')} 
-              className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
-            >
-              Testimonials
-            </button>
-            <button 
-              onClick={() => scrollToSection('contact')} 
-              className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-105"
-            >
-              Contact
-            </button>
-          </nav>
+        {/* Desktop Navigation */}
+        {!isMobile && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, mx: 4, flexGrow: 1 }}>
+            {menuItems.map((item) => (
+              <NavButton
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+              >
+                {item.label}
+              </NavButton>
+            ))}
+          </Box>
+        )}
 
-          {/* Desktop CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
+        {/* Desktop CTA Buttons */}
+        {!isMobile && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Button variant="text" size="small">
               Log In
             </Button>
-            <Button variant="default" size="sm">
+            <Button variant="contained" size="small">
               Get Started
             </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border bg-background/95 backdrop-blur-sm animate-fade-in-up">
-            <nav className="flex flex-col space-y-4">
-              <button 
-                onClick={() => scrollToSection('features')} 
-                className="text-muted-foreground hover:text-foreground transition-colors py-2 text-left"
-              >
-                Features
-              </button>
-              <button 
-                onClick={() => scrollToSection('pricing')} 
-                className="text-muted-foreground hover:text-foreground transition-colors py-2 text-left"
-              >
-                Pricing
-              </button>
-              <button 
-                onClick={() => scrollToSection('testimonials')} 
-                className="text-muted-foreground hover:text-foreground transition-colors py-2 text-left"
-              >
-                Testimonials
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')} 
-                className="text-muted-foreground hover:text-foreground transition-colors py-2 text-left"
-              >
-                Contact
-              </button>
-              <div className="flex flex-col space-y-3 pt-4 border-t border-border">
-                <Button variant="ghost" size="sm" className="w-full">
-                  Log In
-                </Button>
-                <Button variant="default" size="sm" className="w-full">
-                  Get Started
-                </Button>
-              </div>
-            </nav>
-          </div>
+          </Box>
         )}
-      </div>
-    </header>
+
+        {/* Mobile Menu Button */}
+        {isMobile && (
+          <IconButton
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            sx={{ color: 'text.primary' }}
+          >
+            {isMenuOpen ? <Close /> : <Menu />}
+          </IconButton>
+        )}
+      </Toolbar>
+
+      {/* Mobile Navigation Drawer */}
+      <Drawer
+        anchor="top"
+        open={isMenuOpen && isMobile}
+        onClose={() => setIsMenuOpen(false)}
+        sx={{
+          '& .MuiDrawer-paper': {
+            mt: 8,
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+          },
+        }}
+      >
+        <List sx={{ p: 2 }}>
+          {menuItems.map((item) => (
+            <ListItem 
+              key={item.id}
+              component="button"
+              onClick={() => scrollToSection(item.id)}
+              sx={{ 
+                cursor: 'pointer',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                },
+              }}
+            >
+              <ListItemText 
+                primary={item.label}
+                sx={{ 
+                  '& .MuiTypography-root': {
+                    color: 'text.secondary',
+                    '&:hover': {
+                      color: 'text.primary',
+                    },
+                  },
+                }}
+              />
+            </ListItem>
+          ))}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mt: 2, px: 2 }}>
+            <Button variant="text" fullWidth>
+              Log In
+            </Button>
+            <Button variant="contained" fullWidth>
+              Get Started
+            </Button>
+          </Box>
+        </List>
+      </Drawer>
+    </StyledAppBar>
   );
 }
