@@ -5,7 +5,6 @@ import {
   Card, 
   CardContent,
   Container,
-  Grid,
   styled,
   useTheme
 } from "@mui/material";
@@ -148,128 +147,133 @@ export function HeroSection() {
 
       {/* Content */}
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2, py: 10 }}>
-        <Grid container spacing={6} alignItems="center">
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 6,
+          flexDirection: { xs: 'column', lg: 'row' }
+        }}>
           {/* Left Content */}
-          <Grid item xs={12} lg={6}>
-            <Box sx={{ color: 'white', '& > *': { mb: 4 } }} className="animate-fade-in-left">
-              <Box>
-                <Typography variant="h1" component="h1" sx={{ mb: 3, lineHeight: 1.2 }}>
-                  Transform Your{' '}
-                  <GradientText variant="h1" sx={{ display: 'block' }}>
-                    Studio Management
-                  </GradientText>
-                </Typography>
-                <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6 }}>
-                  Streamline operations, boost member engagement, and grow your business with our comprehensive studio management platform.
-                </Typography>
-              </Box>
+          <Box sx={{ flex: 1, color: 'white', '& > *': { mb: 4 } }} className="animate-fade-in-left">
+            <Box>
+              <Typography variant="h1" component="h1" sx={{ mb: 3, lineHeight: 1.2 }}>
+                Transform Your{' '}
+                <GradientText variant="h1" sx={{ display: 'block' }}>
+                  Studio Management
+                </GradientText>
+              </Typography>
+              <Typography variant="h5" sx={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6 }}>
+                Streamline operations, boost member engagement, and grow your business with our comprehensive studio management platform.
+              </Typography>
+            </Box>
 
-              {/* Key Benefits */}
-              <Box sx={{ '& > *': { mb: 2 } }}>
+            {/* Key Benefits */}
+            <Box sx={{ '& > *': { mb: 2 } }}>
+              {[
+                'Automated scheduling and booking system',
+                'Seamless payment processing and billing',
+                'Comprehensive member management tools',
+              ].map((benefit, index) => (
+                <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <CheckCircle sx={{ color: '#4ade80', fontSize: 24 }} />
+                  <Typography variant="body1" sx={{ fontSize: '1.125rem' }}>
+                    {benefit}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+
+            {/* CTA Buttons */}
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, pt: 2 }}>
+              <Button
+                variant="contained"
+                size="large"
+                endIcon={<ArrowForward />}
+                sx={{
+                  py: 2,
+                  px: 4,
+                  fontSize: '1.125rem',
+                  fontWeight: 600,
+                  '& .MuiSvgIcon-root': {
+                    transition: 'transform 0.3s ease',
+                  },
+                  '&:hover .MuiSvgIcon-root': {
+                    transform: 'translateX(4px)',
+                  },
+                }}
+              >
+                Get Started Today
+              </Button>
+              <Button
+                variant="outlined"
+                size="large"
+                sx={{
+                  py: 2,
+                  px: 4,
+                  fontSize: '1.125rem',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    borderColor: 'white',
+                  },
+                }}
+              >
+                Watch Demo
+              </Button>
+            </Box>
+
+            {/* Trust Indicators */}
+            <Box sx={{ pt: 4, borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}>
+                Trusted by 500+ studios worldwide
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap', color: 'rgba(255, 255, 255, 0.6)' }}>
                 {[
-                  'Automated scheduling and booking system',
-                  'Seamless payment processing and billing',
-                  'Comprehensive member management tools',
-                ].map((benefit, index) => (
-                  <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                    <CheckCircle sx={{ color: '#4ade80', fontSize: 24 }} />
-                    <Typography variant="body1" sx={{ fontSize: '1.125rem' }}>
-                      {benefit}
-                    </Typography>
+                  { icon: People, text: '10,000+ Members' },
+                  { icon: CalendarMonth, text: '50,000+ Classes' },
+                  { icon: TrendingUp, text: '98% Satisfaction' },
+                ].map((item, index) => (
+                  <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <item.icon sx={{ fontSize: 20 }} />
+                    <Typography variant="body2">{item.text}</Typography>
                   </Box>
                 ))}
               </Box>
-
-              {/* CTA Buttons */}
-              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, pt: 2 }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowForward />}
-                  sx={{
-                    py: 2,
-                    px: 4,
-                    fontSize: '1.125rem',
-                    fontWeight: 600,
-                    '& .MuiSvgIcon-root': {
-                      transition: 'transform 0.3s ease',
-                    },
-                    '&:hover .MuiSvgIcon-root': {
-                      transform: 'translateX(4px)',
-                    },
-                  }}
-                >
-                  Get Started Today
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  sx={{
-                    py: 2,
-                    px: 4,
-                    fontSize: '1.125rem',
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: 'white',
-                      color: 'black',
-                      borderColor: 'white',
-                    },
-                  }}
-                >
-                  Watch Demo
-                </Button>
-              </Box>
-
-              {/* Trust Indicators */}
-              <Box sx={{ pt: 4, borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
-                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}>
-                  Trusted by 500+ studios worldwide
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap', color: 'rgba(255, 255, 255, 0.6)' }}>
-                  {[
-                    { icon: People, text: '10,000+ Members' },
-                    { icon: CalendarMonth, text: '50,000+ Classes' },
-                    { icon: TrendingUp, text: '98% Satisfaction' },
-                  ].map((item, index) => (
-                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <item.icon sx={{ fontSize: 20 }} />
-                      <Typography variant="body2">{item.text}</Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
             </Box>
-          </Grid>
+          </Box>
 
           {/* Right Content - Feature Cards */}
-          <Grid item xs={12} lg={6} sx={{ display: { xs: 'none', lg: 'block' } }}>
-            <Box sx={{ '& > *': { mb: 3 } }} className="animate-fade-in-right">
-              {features.map((feature, index) => (
-                <FeatureCard
-                  key={index}
-                  sx={{
-                    animationDelay: feature.delay,
-                  }}
-                >
-                  <CardContent sx={{ p: 0 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                      <FloatingIcon sx={{ animationDelay: `${index * 0.5}s` }}>
-                        <feature.icon sx={{ color: 'white', fontSize: 24 }} />
-                      </FloatingIcon>
-                      <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
-                        {feature.title}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                      {feature.description}
+          <Box sx={{ 
+            flex: 1, 
+            display: { xs: 'none', lg: 'block' },
+            '& > *': { mb: 3 } 
+          }} className="animate-fade-in-right">
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={index}
+                sx={{
+                  animationDelay: feature.delay,
+                }}
+              >
+                <CardContent sx={{ p: 0 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                    <FloatingIcon sx={{ animationDelay: `${index * 0.5}s` }}>
+                      <feature.icon sx={{ color: 'white', fontSize: 24 }} />
+                    </FloatingIcon>
+                    <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+                      {feature.title}
                     </Typography>
-                  </CardContent>
-                </FeatureCard>
-              ))}
-            </Box>
-          </Grid>
-        </Grid>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                    {feature.description}
+                  </Typography>
+                </CardContent>
+              </FeatureCard>
+            ))}
+          </Box>
+        </Box>
       </Container>
 
       {/* Scroll Indicator */}
